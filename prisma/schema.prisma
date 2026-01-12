@@ -32,3 +32,15 @@ model Session {
   refreshToken        String?
   refreshTokenExpires DateTime?
 }
+
+model SavedProduct {
+  id Int @id @default(autoincrement())
+  shop String
+  productId String
+  title String
+  handle String
+  image String?
+  isAvailable Boolean
+  availableQuantity Int
+  createdTime DateTime @default(now())
+}

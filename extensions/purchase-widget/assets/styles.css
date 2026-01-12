@@ -1,0 +1,28 @@
+#widget-buy-button {
+  display: block;
+  max-width: 44rem;
+  width: 100%;
+  padding: 15px 20px;
+  margin-top: 15px;
+  cursor: pointer;
+  
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+
+  background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+  color: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+#widget-buy-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  filter: brightness(1.2);
+}

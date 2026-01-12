@@ -13,7 +13,14 @@ export default function Index() {
         <s-paragraph>
           Navigate to the Products section to see the products created in your store.
         </s-paragraph>
-        <s-link href="/app/products">Go to Products</s-link>
+        <s-unordered-list>
+          <s-list-item>
+            <s-link href="/app/products">Go to Products</s-link>
+          </s-list-item>
+          <s-list-item>
+          <s-link href="/app/saved">Go to Saved Products</s-link>
+          </s-list-item>
+        </s-unordered-list>
       </s-section>
 
     </s-page>

@@ -1,0 +1,50 @@
+{% if product.metafields.my_app.is_saved %}
+<div class="my-widget-container">
+  <button 
+    id="widget-buy-button"
+    {% unless product.available %}
+    disabled
+    {% endunless %}
+    data-product-id="{{ block.settings.product.variants.first.id }}"
+  >
+    Buy with 20% Off
+  </button>
+</div>
+
+{% endif %}
+
+<script>
+  document.getElementById('widget-buy-button').addEventListener('click', async function() {
+    const variantId = this.getAttribute('data-product-id');
+    
+    const formData = {
+     'items': [{
+      'id': variantId,
+      'quantity': 1,
+      'properties': {
+        '_added_via_widget': 'true' // Hidden attribute (starts with _)
+      }
+     }]
+    };
+
+    await fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    // Redirect to checkout or open drawer
+    window.location.href = '/cart';
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Buy with discount button",
+  "target": "section",
+  "stylesheet": "styles.css",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product", "autofill": true }
+  ]
+}
+{% endschema %}

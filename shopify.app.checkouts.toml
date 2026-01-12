@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "438c97309f8b6828cfce48e1d62b5ec2"
-name = "testore"
+client_id = "7b3a89714e09f4f3e0601e0f047f75ea"
+name = "Store App"
 application_url = "https://example.com"
 embedded = true
 
@@ -9,15 +9,7 @@ embedded = true
 automatically_update_urls_on_dev = true
 
 [webhooks]
-api_version = "2026-01"
-
-  [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
-  uri = "/webhooks/app/uninstalled"
-
-  [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
+api_version = "2026-04"
 
   [[webhooks.subscriptions]]
   topics = [ "products/update" ]

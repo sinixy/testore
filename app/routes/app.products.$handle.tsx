@@ -1,34 +1,8 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
 import { authenticate } from "../shopify.server";
-
-
-interface VariantItem {
-  id: string
-  title: string
-  price: string
-  currencyCode: string
-}
-
-interface ProductItem {
-  id: string
-  title: string
-  description: string
-  imageUrl?: string
-  imageAlt?: string
-  variants: VariantItem[]
-}
-
-interface ShopifyVariantNode {
-  id: string;
-  title: string;
-  contextualPricing: {
-    price: {
-      amount: string,
-      currencyCode: string
-    }
-  };
-}
+import { GET_PRODUCT_BY_HANDLE_QUERY } from "../graphql";
+import type { ProductItem, VariantItem, ShopifyVariantNode } from "../graphql";
 
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -36,37 +10,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { handle } = params;
 
   const response = await admin.graphql(
-    `#graphql
-    query getProductByHandle($handle: String!) {
-      productByHandle(handle: $handle) {
-        id
-        title
-        description
-        featuredMedia {
-          id
-          alt
-          ... on MediaImage {
-            image {
-              url
-            }
-          }
-        }
-        variants(first: 10) {
-          edges {
-            node {
-              id
-              title
-              contextualPricing(context: {country: US}) {
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }`,
+    GET_PRODUCT_BY_HANDLE_QUERY,
     {
       variables: { handle },
     }
@@ -121,34 +65,34 @@ export default function ProductDetailsPage() {
   const { product }: { product: ProductItem } = useLoaderData<typeof loader>();
 
   return (
-<s-page heading={product.title} back-action="/app/products">
-  <s-grid gridTemplateColumns="1fr 1fr" gap="large" alignItems="start">
+    <s-page heading={product.title} back-action="/app/products">
+      <s-grid gridTemplateColumns="1fr 1fr" gap="large" alignItems="start">
 
-    <s-box inlineSize="100%" blockSize="100%">
-      <s-image 
-        src={product.imageUrl} 
-        alt={product.imageAlt} 
-        inlineSize="fill" 
-      />
-    </s-box>
-
-    <s-stack gap="base">
-      <s-section heading="Description">
-        <s-box>
-          {product.description ? product.description : "(No description)"}
+        <s-box inlineSize="100%" blockSize="100%">
+          <s-image 
+            src={product.imageUrl} 
+            alt={product.imageAlt} 
+            inlineSize="fill" 
+          />
         </s-box>
-      </s-section>
 
-      <s-section heading="Variants">
-        <s-stack>
-          {product.variants.map((variant: VariantItem, index: number) => (
-            <ProductVariant key={index} variant={variant} />
-          ))}
+        <s-stack gap="base">
+          <s-section heading="Description">
+            <s-box>
+              {product.description ? product.description : "(No description)"}
+            </s-box>
+          </s-section>
+
+          <s-section heading="Variants">
+            <s-stack>
+              {product.variants.map((variant: VariantItem, index: number) => (
+                <ProductVariant key={index} variant={variant} />
+              ))}
+            </s-stack>
+          </s-section>
         </s-stack>
-      </s-section>
-    </s-stack>
 
-  </s-grid>
-</s-page>
+      </s-grid>
+    </s-page>
   );
 }
